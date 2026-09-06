@@ -1,0 +1,4 @@
+CREATE TABLE IF NOT EXISTS resuto_state (
+  id INTEGER PRIMARY KEY CHECK (id = 1),
+  document JSONB NOT NULL
+);
