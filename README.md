@@ -2,6 +2,12 @@
 
 A runnable restaurant MVP: guest reservations and QR ordering, a manager floor workspace, a kitchen display, inventory, a simulated payment ledger and configurable Stripe/Paymob hosted checkout adapters. Built from the supplied master plan in an initially empty workspace.
 
+## Experience upgrade
+
+Guided setup: `/manager/setup`. Pricing: `/pricing`. Reservations: `/reserve`. Floor preview and the new template are inside `/manager/floor-editor`.
+
+See [the implementation and verification report](docs/EXPERIENCE-VERIFICATION.md) for tested flows, screenshots and remaining launch requirements. The app is still one restaurant installation; merchant signup and subscription billing are not implemented.
+
 ## Run
 
 Requires Node.js 24 or later.
