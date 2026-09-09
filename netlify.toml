@@ -7,7 +7,7 @@
 [functions]
   node_bundler = "esbuild"
   node_module_format = "esm"
-  external_node_modules = ["@netlify/database", "pg", "qrcode", "serverless-http"]
+  external_node_modules = ["@netlify/blobs", "@netlify/database", "pg", "qrcode", "serverless-http"]
 [[redirects]]
   from = "/api/*"
   to = "/.netlify/functions/api/api/:splat"
@@ -15,6 +15,10 @@
 [[redirects]]
   from = "/qr/*"
   to = "/.netlify/functions/api/qr/:splat"
+  status = 200
+[[redirects]]
+  from = "/media/*"
+  to = "/.netlify/functions/api/media/:splat"
   status = 200
 [[redirects]]
   from = "/*"
@@ -25,4 +29,4 @@
   [headers.values]
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "same-origin"
-    Content-Security-Policy = "default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; frame-ancestors 'none'"
+    Content-Security-Policy = "default-src 'self'; img-src 'self' data: blob:; style-src 'self' 'unsafe-inline'; script-src 'self'; frame-ancestors 'none'"

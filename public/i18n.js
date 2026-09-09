@@ -3,7 +3,9 @@ import ar from './locales/ar.js';
 import operations from './locales/ar-operations.js';
 import extra from './locales/ar-extra.js';
 import experience from './locales/ar-experience.js';
-Object.assign(ar,operations,extra,experience);
+import rebuild from './locales/ar-rebuild.js';
+import landing from './locales/ar-landing.js';
+Object.assign(ar,operations,extra,experience,rebuild,landing);
 const lower=Object.fromEntries(Object.entries(ar).map(([k,v])=>[k.toLowerCase(),v]));
 export function translatePhrase(text){if(ar[text]||lower[text.toLowerCase()])return ar[text]||lower[text.toLowerCase()];return text.replace(/\b(Contains|tables occupied|ready to serve|capacity used|seats|guests|tables|orders|portions|selected|pickup|delivery|milk|eggs|fish|wheat)\b/gi,k=>lower[k.toLowerCase()]||k).replace(/\bEGP\s*/g,'ج.م. ');}
 export let language=localStorage.getItem('resuto-language')==='ar'?'ar':'en';

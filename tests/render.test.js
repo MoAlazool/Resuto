@@ -16,7 +16,7 @@ for(const route of ['/','/restaurant','/reserve','/menu','/order','/t/example','
  const fetch=async url=>({ok:true,json:async()=>url.includes('/visit')?v:{...s,role}});
  const store=new Map(route==='/order'?[['resuto-token','example']]:[]),sessionStorage={getItem:k=>store.get(k)||null,setItem:(k,v)=>store.set(k,v),removeItem:k=>store.delete(k)};
  const AsyncFunction=Object.getPrototypeOf(async function(){}).constructor;
- await new AsyncFunction('document','location','sessionStorage','fetch','setInterval','saasPage','restaurantPage','savedFloorSvg','localizedName','language',source)(document,{pathname:route},sessionStorage,fetch,()=>{},saasPage,restaurantPage,savedFloorSvg,m=>m.name,'en');
+ await new AsyncFunction('window','document','location','sessionStorage','fetch','setInterval','saasPage','restaurantPage','savedFloorSvg','localizedName','language',source)({addEventListener:()=>{}},document,{pathname:route,hash:'#floor'},sessionStorage,fetch,()=>{},saasPage,restaurantPage,savedFloorSvg,m=>m.name,'en');
  assert.match(root.innerHTML,/<main/);assert.doesNotMatch(root.innerHTML,/We couldn’t connect/);
  if(route==='/manager')for(const id of ['reservations','visits','orders','menu','insights','settings','floor']){await listeners.click({target:{closest:()=>({dataset:{action:'tab',id}})}});assert.ok(root.innerHTML.includes('workspace'));}
  if(route==='/reserve'){assert.match(root.innerHTML,/data-form="reserve"/);assert.match(root.innerHTML,/type="button" class="secondary full" data-action="availability"/)}

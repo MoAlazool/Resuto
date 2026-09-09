@@ -1,5 +1,5 @@
 import {switcher,watchLegacy} from './i18n.js';
-if(location.pathname==='/')await import('./marketing.js');
+if(location.pathname==='/')await import('./landing.js');
 else if(location.pathname==='/pricing')await import('./pricing.js');
 else if(location.pathname==='/reserve')await import('./reservations.js');
 else if(!location.pathname.startsWith('/manager')&&location.pathname!=='/kitchen')await import('./guest.js');

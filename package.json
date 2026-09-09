@@ -13,12 +13,14 @@
     "test:editor": "python scripts/editor_smoke.py",
     "test:data": "python scripts/data_guest_smoke.py",
     "package:netlify": "node scripts/package-netlify.mjs",
-    "test:browser:legacy": "python scripts/browser_smoke.py"
+    "test:browser:legacy": "python scripts/browser_smoke.py",
+    "test:owner-ai": "python scripts/owner_ai_smoke.py"
   },
   "engines": {
     "node": ">=24"
   },
   "dependencies": {
+    "@netlify/blobs": "^11.0.3",
     "@netlify/database": "^2.0.1",
     "pg": "^8.23.0",
     "qrcode": "^1.5.4",

@@ -33,9 +33,9 @@ def run():
                     b.on('dialog',lambda dialog:dialog.accept())
                     try:
                         artifacts=ROOT/'artifacts';artifacts.mkdir(exist_ok=True)
-                        for route,heading in [('/', 'Great hospitality.'),('/restaurant','Good food.')]:
+                        for route,heading in [('/', 'Run the room.'),('/restaurant','Good food.')]:
                             a.goto(ORIGIN+route)
-                            expect(a.get_by_role('heading',level=1)).to_contain_text(heading)
+                            expect(a.get_by_role('heading',level=1).first).to_contain_text(heading)
                             assert a.evaluate('document.documentElement.scrollWidth')<=1440
                             a.locator('img').evaluate_all('(images)=>Promise.all(images.map(i=>{i.loading="eager";return i.decode()}))')
                             a.screenshot(path=str(artifacts/('saas-desktop.png' if route=='/' else 'restaurant-desktop.png')),full_page=True)
@@ -55,21 +55,22 @@ def run():
                         a.locator('[data-tool="layer"][data-id="t2"]').click()
                         a.screenshot(path=str(artifacts/'editor-preview.png'),full_page=True)
                         a.locator('[data-tool="layer"][data-id="t1"]').click()
+                        a.locator('.advanced-dimensions summary').click()
                         a.locator('#object-properties [name="label"]').fill('Window table')
                         a.locator('#object-properties [name="width"]').fill('130')
                         a.locator('#object-properties [name="rotation"]').fill('30')
-                        a.get_by_role('button',name='Apply properties',exact=True).click()
+                        a.locator('#object-properties [name=label]').press('Tab')
                         expect(a.locator('#studio-canvas [data-object-id="t1"]')).to_have_attribute('transform','translate(240 240) rotate(30)')
                         assert a.evaluate("fetch('/api/floor').then(r=>r.json()).then(f=>f.tables[0].label)")=='T1'
-                        a.locator('[data-tool="undo"]').click()
+                        a.locator('[data-tool="undo"]').click();a.locator('[data-tool="undo"]').click();a.locator('[data-tool="undo"]').click()
                         expect(a.locator('#object-properties [name="label"]')).to_have_value('T1')
-                        a.locator('[data-tool="redo"]').click()
+                        a.locator('[data-tool="redo"]').click();a.locator('[data-tool="redo"]').click();a.locator('[data-tool="redo"]').click()
                         expect(a.locator('#object-properties [name="label"]')).to_have_value('Window table')
                         a.locator('[data-tool="save"]').click()
                         expect(a.locator('#draft-status')).to_have_text('✓ All changes saved')
                         print('PASS properties, resize, rotation, draft isolation, undo/redo and save',flush=True)
                         # Second editor retains its own base revision and cannot overwrite A.
-                        b.locator('[data-tool="add"][data-kind="counter"]').click()
+                        b.locator('.more-floor-objects summary').click();b.locator('[data-tool="add"][data-kind="counter"]').click()
                         b.locator('[data-tool="save"]').click()
                         expect(b.locator('.floor-conflict')).to_be_visible()
                         with b.expect_download() as downloaded:b.locator('[data-tool="export"]').click()
@@ -79,6 +80,7 @@ def run():
                         print('PASS stale save rejection, draft export and reload',flush=True)
                         # Create, move, resize and rotate through actual canvas handles.
                         a.locator('[data-tool="add"][data-kind="rectangle"]').click()
+                        a.locator('.advanced-dimensions summary').click()
                         current=a.locator('#studio-canvas .svg-table.is-selected')
                         current_id=current.get_attribute('data-object-id')
                         box=current.bounding_box()
@@ -97,8 +99,8 @@ def run():
                         a.locator('[data-tool="multi"]').click()
                         a.locator('[data-tool="layer"][data-id="t3"]').click()
                         a.locator('[data-tool="layer"][data-id="t5"]').click()
-                        a.locator('[data-tool="align-top"]').click()
-                        a.locator('[data-tool="space-x"]').click()
+                        a.locator('.arrangement-options summary').click();a.locator('[data-tool="align-top"]').click()
+                        a.locator('.arrangement-options summary').click();a.locator('[data-tool="space-x"]').click()
                         a.locator('[data-tool="undo"]').click()
                         a.locator('[data-tool="undo"]').click()
                         a.locator('[data-tool="multi"]').click()
@@ -110,6 +112,7 @@ def run():
                         expect(a.locator('#draft-status')).to_have_text('✓ All changes saved')
                         print('PASS canvas drag/resize, duplicate, multi-select, align, spacing, keyboard and discard',flush=True)
                         # Object palette and background are persisted through one save.
+                        a.locator('.more-floor-objects summary').click()
                         for kind in ['wall','door','window','counter','text','zone']:a.locator('[data-tool="add"][data-kind="'+kind+'"]').click()
                         a.locator('[data-tool="delete"]').click()
                         a.locator('[data-tool="undo"]').click()
@@ -130,7 +133,7 @@ def run():
                         print('PASS structural objects, background controls, failed save and retry',flush=True)
                         a.locator('[data-tool="layer"][data-id="t1"]').click()
                         a.locator('#object-properties [name="label"]').fill('Recovered draft')
-                        a.get_by_role('button',name='Apply properties',exact=True).click()
+                        a.locator('#object-properties [name=label]').press('Tab')
                         a.reload()
                         expect(a.locator('#draft-status')).to_have_text('● Unsaved changes')
                         a.locator('[data-tool="layer"][data-id="t1"]').click()
@@ -154,7 +157,7 @@ def run():
                         mobile.goto(ORIGIN+'/manager/floor-editor');mobile.get_by_label('Password',exact=True).fill('editor-test');mobile.get_by_role('button',name='Sign in',exact=False).click()
                         expect(mobile.locator('#studio-canvas')).to_be_visible()
                         mobile.locator('[data-tool="toggle-objects"]').click()
-                        expect(mobile.locator('.object-palette')).to_be_visible()
+                        expect(mobile.locator('.object-palette').first).to_be_visible()
                         mobile.locator('[data-tool="toggle-objects"]').click()
                         mobile.locator('[data-tool="toggle-properties"]').click()
                         assert mobile.evaluate('document.documentElement.scrollWidth')<=390
