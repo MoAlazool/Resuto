@@ -6,7 +6,6 @@
   NODE_VERSION = "24"
 [functions]
   node_bundler = "esbuild"
-  node_module_format = "esm"
   external_node_modules = ["@netlify/blobs", "@netlify/database", "pg", "qrcode", "serverless-http"]
 [[redirects]]
   from = "/api/*"

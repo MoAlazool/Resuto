@@ -13,7 +13,9 @@ const payload=await Promise.all([
 if(!payload){
  // The API is unreachable, or the visitor navigated away mid-load. Say so
  // plainly and stop evaluating rather than throwing into the console.
- document.querySelector('#app').innerHTML='<div class="lp-offline"><p>The restaurant data could not be loaded.</p><button type="button" onclick="location.reload()">Try again</button></div>';
+ const shell=document.querySelector('#app');
+ shell.innerHTML='<div class="lp-offline"><p>The restaurant data could not be loaded.</p><button type="button" id="lp-retry">Try again</button></div>';
+ shell.querySelector('#lp-retry').onclick=()=>location.reload();
  await new Promise(()=>{});
 }
 const [data,caps,pricing]=payload;
