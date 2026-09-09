@@ -6,7 +6,7 @@
   NODE_VERSION = "24"
 [functions]
   node_bundler = "esbuild"
-  external_node_modules = ["@netlify/blobs", "@netlify/database", "pg", "qrcode", "serverless-http"]
+  external_node_modules = ["@netlify/blobs", "pg", "qrcode", "serverless-http"]
 [[redirects]]
   from = "/api/*"
   to = "/.netlify/functions/api/api/:splat"

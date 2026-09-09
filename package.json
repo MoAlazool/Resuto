@@ -21,7 +21,6 @@
   },
   "dependencies": {
     "@netlify/blobs": "^11.0.3",
-    "@netlify/database": "^2.0.1",
     "pg": "^8.23.0",
     "qrcode": "^1.5.4",
     "serverless-http": "^4.0.0"

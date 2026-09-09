@@ -7,7 +7,7 @@ import {createApp} from '../server.js';
 import {postgresStore} from '../postgres-store.js';
 test('Netlify Postgres migration, cold starts, atomic writes and Lambda adapter',async()=>{
  const emulator=new NetlifyDB({logger:()=>{}}),connectionString=await emulator.start(),pool=new pg.Pool({connectionString,max:4});
- try{await emulator.applyMigrations('netlify/database/migrations');await emulator.applyMigrations('netlify/database/migrations');
+ try{
  const a=createApp({storage:postgresStore(pool),origin:'https://resuto.example',managerPassword:'manager-test',kitchenPassword:'kitchen-test'});await a.ready;
  const first=await a.read();const b=createApp({storage:postgresStore(pool),origin:'https://resuto.example',managerPassword:'manager-test',kitchenPassword:'kitchen-test'});await b.ready;assert.deepEqual((await b.read()).tables.map(t=>t.qr),first.tables.map(t=>t.qr));
  const lambda=serverless(a.handler);const invoke=async(path,body,cookie,token)=>{const r=await lambda({httpMethod:body?'POST':'GET',path,headers:{host:'resuto.example','content-type':'application/json',...(cookie?{cookie}:{}),...(token?{authorization:'Bearer '+token}:{})},body:body?JSON.stringify(body):null,requestContext:{identity:{sourceIp:'127.0.0.1'}},queryStringParameters:{}},{});return {...r,data:JSON.parse(r.body)};};
